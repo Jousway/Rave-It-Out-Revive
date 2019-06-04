@@ -63,7 +63,7 @@ t[#t+1] = Def.ActorFrame {
 	
 	Def.Sprite{
 		--Yeah I dunno why I have to specify the full path
-		Texture=THEME:GetPathB("ScreenSelectMusic","overlay/help_info/messages 1x4.png");
+		Texture="help_info/messages 1x4.png";
 		InitCommand=function(self)
 			(cmd(x,_screen.cx;y,SCREEN_BOTTOM-50;zoom,.6;animate,false;setstate,0))(self);
 			if getenv("PlayMode") == "Easy" then
@@ -564,19 +564,18 @@ else
 						end;
 					end;
 					OnCommand=function(self)
-						local arrow = "__RIO";
-						local name = "THUMB";
+						local arrow = "UpLeft";
+						local name = "Tap note";
 						local highlightedNoteSkin = CurrentNoteSkin(pn);
-						local path = NOTESKIN:GetPathForNoteSkin(arrow, name, highlightedNoteSkin);
-						--SCREENMAN:SystemMessage("1Noteskin="..highlightedNoteSkin..",Path="..path);
+						--Constantly causes errors, just remove it
+						local path-- = NOTESKIN:GetPathForNoteSkin("", "__RIO_THUMB", CurrentNoteSkin(pn));
 						if not path then
-							arrow = "UpLeft"; name = "Tap Note";
 							if highlightedNoteSkin == "delta" then
 								name = "Ready Receptor";
 							elseif highlightedNoteSkin == "delta-note" or string.ends(highlightedNoteSkin, "rhythm") then
 								arrow = "_UpLeft";
 							end
-							path = NOTESKIN:GetPathForNoteSkin(arrow, name, highlightedNoteSkin);
+							path = NOTESKIN:GetPathForNoteSkin(arrow, name, CurrentNoteSkin(pn));
 						end
 						
 						self:Load(path);
@@ -588,12 +587,10 @@ else
 						if params.Player == pn then
 							if params.Selection < OPTIONSLIST_NUMNOTESKINS then
 								local highlightedNoteSkin = OPTIONSLIST_NOTESKINS[params.Selection+1];
-								local arrow = "__RIO";
-								local name = "THUMB";
-								local path = NOTESKIN:GetPathForNoteSkin("__RIO", "THUMB", highlightedNoteSkin);
-								--SCREENMAN:SystemMessage("2Noteskin="..highlightedNoteSkin..",Path="..path);
+								local arrow = "UpLeft";
+								local name = "Tap note";
+								local path-- = NOTESKIN:GetPathForNoteSkin("", "__RIO_THUMB", highlightedNoteSkin);
 								if not path then
-									arrow = "UpLeft"; name = "Tap Note";
 									if highlightedNoteSkin == "delta" then
 										name = "Ready Receptor";
 									elseif highlightedNoteSkin == "delta-note" or string.ends(highlightedNoteSkin, "rhythm") then

@@ -1,3 +1,3 @@
 return Def.Quad{
-	OnCommand=cmd(FullScreen;diffuse,color("#000000");diffusealpha,0;linear,0.25;diffusealpha,1;);
-};
+	OnCommand=function(self) self:FullScreen():diffuse(0,0,0,0):linear(0.25):diffusealpha(1) end
+}

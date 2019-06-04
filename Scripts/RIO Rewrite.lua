@@ -12,8 +12,10 @@ end
 RIO.DoDebug = ToBoolean(RIO.Config("DebugMode","false"))
 RIO.InternalName = RIO.Config("InternalName","RIOS2")
 RIO.Version = RIO.Config("Version","Storm 2019")
-RIO.ScreenRatio =  RIO.Config("FadeInRatio",0.25)
-RIO.AnimationLength = RIO.Config("FadeInTween",0.25)
+RIO.ScreenInRatio =  RIO.Config("FadeInRatio",0.25)
+RIO.AnimationInLength = RIO.Config("FadeInTween",0.25)
+RIO.ScreenOutRatio =  RIO.Config("FadeOutRatio",0.25)
+RIO.AnimationOutLength = RIO.Config("FadeOutTween",0.25)
 
 
 RIO.TitleMenu = function()
@@ -21,9 +23,9 @@ RIO.TitleMenu = function()
 		return "RIOScreenTitleMenu"
 	end
 	if GAMESTATE:GetCoinsNeededToJoin() > GAMESTATE:GetCoins() then
-		return "ScreenTitleJoin"
+		return "RIOScreenTitleJoin"
 	else
-		return "ScreenTitleJoin"
+		return "RIOScreenTitleJoin"
 	end
 end
 
@@ -42,4 +44,17 @@ RIO.UnlockCheck = function(LockedSong)
 		end
 	end
 	return -1
+end
+
+function RIO.Input(self)
+	return function(event)
+		if not event.PlayerNumber then return end
+		self.pn = event.PlayerNumber		
+		if ToEnumShortString(event.type) == "FirstPress" or ToEnumShortString(event.type) == "Repeat" then
+			self:queuecommand(event.GameButton)			
+		end
+		if ToEnumShortString(event.type) == "Release" then
+			self:queuecommand(event.GameButton.."Release")	
+		end
+	end
 end

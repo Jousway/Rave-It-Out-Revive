@@ -13,13 +13,15 @@ RIO.Config = function(Key,Value)
 	return Value
 end
 
-for _,v in ipairs(NOTESKIN:GetNoteSkinNames()) do
-	local ToAdd = true
-	for DisabledSkin in string.gmatch(RIO.Config("DisabledNoteskins","delta-routine-p1,delta-routine-p2,cmd-routine-p1,cmd-routine-p2,routine-p1,routine-p2,rio-p1,rio-p2,rio-p3,rio-p4,rio-p5,perfor1,perfor2,perfor3,_disabled")..",", "(.-),") do
-		if v == DisabledSkin then ToAdd = false end
+RIO.LoadNoteskins = function()
+	for _,v in ipairs(NOTESKIN:GetNoteSkinNames()) do
+		local ToAdd = true
+		for DisabledSkin in string.gmatch(RIO.Config("DisabledNoteskins","delta-routine-p1,delta-routine-p2,cmd-routine-p1,cmd-routine-p2,routine-p1,routine-p2,rio-p1,rio-p2,rio-p3,rio-p4,rio-p5,perfor1,perfor2,perfor3,_disabled")..",", "(.-),") do
+			if v == DisabledSkin then ToAdd = false end
+		end
+		if ToAdd then RIO.NoteskinList[#RIO.NoteskinList+1] = v end
 	end
-	if ToAdd then RIO.NoteskinList[#RIO.NoteskinList+1] = v end
-end
+end	
 
 RIO.DoDebug = ToBoolean(RIO.Config("DebugMode","false"))
 RIO.InternalName = RIO.Config("InternalName","RIOS2")
@@ -69,4 +71,35 @@ function RIO.Input(self)
 			self:queuecommand(event.GameButton.."Release")	
 		end
 	end
+end
+
+function RIO.NoteSkins()
+	RIO.LoadNoteskins()
+	local t = {
+		Name="NoteskinsCustom",
+		LayoutType="ShowAllInRow",
+		SelectType="SelectOne",
+		OneChoiceForAllPlayers=false,
+		ExportOnChange=false,
+		Choices=RIO.NoteskinList,
+		LoadSelections=function(self, list, pn)
+			for i=1,#list do
+				if RIO.NoteskinList[i] == GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin() then
+					list[i] = true
+					return
+				end
+			end
+			print("Noteskin Not Found!, Using first value as fallback.")
+			list[1] = true
+		end,
+		SaveSelections=function(self, list, pn)
+			for i=1,#list do
+				if list[i] == true then
+					GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin(RIO.NoteskinList[i]);
+				end
+			end
+		end
+	}
+	setmetatable(t, t)
+	return t
 end

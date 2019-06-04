@@ -405,7 +405,7 @@ else
 							elseif currentOpList == "NoteSkins" then
 								local curRow;
 								--This global var is exported by OptionRowAvailableNoteskins()
-								if OPLIST_splitAt < OPTIONSLIST_NUMNOTESKINS then
+								if OPLIST_splitAt < #RIO.NoteskinList then
 									curRow = math.floor((params.Selection)/2)+1
 								else
 									curRow = params.Selection+1
@@ -432,10 +432,10 @@ else
 							if currentOpList == "NoteSkins" then
 								local curRow;
 								--This global var is exported by OptionRowAvailableNoteskins()
-								if OPLIST_splitAt < OPTIONSLIST_NUMNOTESKINS then
-									curRow = math.floor((OPTIONSLIST_NUMNOTESKINS)/2)+1
+								if OPLIST_splitAt < #RIO.NoteskinList then
+									curRow = math.floor((#RIO.NoteskinList)/2)+1
 								else
-									curRow = OPTIONSLIST_NUMNOTESKINS+1
+									curRow = #RIO.NoteskinList+1
 								end;
 								--SCREENMAN:SystemMessage(curRow)
 								if curRow>OPLIST_ScrollAt then

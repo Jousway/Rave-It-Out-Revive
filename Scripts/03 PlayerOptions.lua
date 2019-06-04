@@ -61,9 +61,6 @@ function OptionRowAvailableNoteskins()
 			end
 		end;
 	end;
-	--Make this global so the OptionsList shit in SSM can access it.
-	OPTIONSLIST_NUMNOTESKINS = #ns
-	OPTIONSLIST_NOTESKINS = ns
 	local t = {
 		Name="NoteskinsCustom",
 		LayoutType = "ShowAllInRow",
@@ -71,6 +68,7 @@ function OptionRowAvailableNoteskins()
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
 		Choices = ns,
+		NumNoteskins = #ns,
 		LoadSelections = function(self, list, pn)
 			--SCREENMAN:SystemMessage("Num items: "..#ns)
 			--This returns an instance of playerOptions, you need to set it back to the original

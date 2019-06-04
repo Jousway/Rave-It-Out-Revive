@@ -1,44 +1,4 @@
---Unlock functions
-function GetUnlockIndex( sEntryID )		--GetUnlockIndex	 by ROAD24 (Jose Jesus)		--HUGE thanks to him -NeobeatIKK
-local iNumLocks = UNLOCKMAN:GetNumUnlocks();
-lua.Trace("ROAD24 GetUnlockIndex: iNumLocks = " .. iNumLocks);
-	for idx = 0, iNumLocks-1 do
-			local sIDtoCompare = UNLOCKMAN:GetUnlockEntry(idx):GetCode();
-			lua.Trace("ROAD24 GetUnlockIndex: idx = " .. idx .. " sIDtoCompare = " .. sIDtoCompare );
-			if sIDtoCompare == sEntryID then
-				lua.Trace("ROAD24 GetUnlockIndex: se encontro el code, index = " .. idx);
-				return idx;
-			end;
-	end;
-	lua.Trace("ROAD24 GetUnlockIndex: No se encontro regresando -1");	-- Si no lo encuentra ;
-	return -1;
-end;
-function IsEntryIDLocked( sEntryID )	--IsEntryIDLocked	 by ROAD24
-	if sEntryID then
-		lua.Trace("ROAD24 IsEntryIDLocked: Intentando obtener index de " .. sEntryID);
-		lua.Trace("ROAD24 IsEntryIDLocked: Invocando GetUnlockIndex");
-		local iEntryIndex = GetUnlockIndex( sEntryID );
-		lua.Trace("ROAD24 IsEntryIDLocked: GetUnlockIndex regreso " .. iEntryIndex );
-		if iEntryIndex >= 0 then
-     		local tUnlockEntry = UNLOCKMAN:GetUnlockEntry( iEntryIndex );
-			if tUnlockEntry then
-				local IsLocked = tUnlockEntry:IsLocked();
-				if IsLocked ~= nil then
-					lua.Trace("ROAD24 IsEntryIDLocked: regresa true");
-					return IsLocked;
-				else
-					lua.Trace("ROAD24 IsEntryIDLocked: IsLocked regreso nil");
-					return -1;
-				end;
-			end;
-		else
-			lua.Trace("ROAD24 IsEntryIDLocked: No se encontro index para " .. sEntryID);
-		end;
-	end;
-		lua.Trace("ROAD24 IsEntryIDLocked: Se esperaba un string pero se recibio nil");
-	return -1;
-end;
-
+--Unlock functions... Not really
 function UnlockStatusToString(num)
 	if num == 0 then
 		return "UNLOCKED: This song is unlocked.";

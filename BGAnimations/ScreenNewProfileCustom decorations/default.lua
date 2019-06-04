@@ -22,5 +22,5 @@ return Def.ActorFrame{
 	LoadFont("monsterrat/_montserrat light 60px")..{
 			Text="TIME";
 			InitCommand=cmd(x,SCREEN_CENTER_X-25;y,SCREEN_BOTTOM-92;zoom,0.6;skewx,-0.2);
-		};
+	};
 };

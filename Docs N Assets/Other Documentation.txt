@@ -13,10 +13,20 @@ Failed - Failed.
 EXTRA STAGE:
 Get 90% or more accuracy for a bonus heart.
 
+OVERTIME STAGE:
+AKA the One More Extra Stage or Encore Extra Stage in other games.
+Get 95% or more accuracy on an extra stage with a glowing red title.
+This extra stage is defined in extra1.crs in the song folder, just like regular StepMania.
+The Overtime stage is defined in config.ini for now.
+
+Mode purposes:
+Beginner Mode: Easy songs, all below lv10.
+Standard Mode: Regular play. No W1 judgment.
+Pro Mode: W1 judgment. No differences aside from that.
+Special Mode: Play unique charts in a folder, such as WinDEU Hates You and UKSRT stuff. Will probably be changed to course mode.
+Quest Mode: Like DJMax Respect's mission mode. Exactly the same, in fact.
 
 EASTER EGGS:
-Hey, don't spoil yourself! You should play the game and find out for yourself...
-Alright, alright, I'll tell you anyway.
 Within 4 days before or after valentines day: Hearts in background
 December: snowflakes in background, christmas hats.
 Weed combo: 420 combos.

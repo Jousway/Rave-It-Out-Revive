@@ -550,70 +550,37 @@ else
 						end;
 					end;
 				};
-		
-				Def.Sprite{
-					InitCommand=cmd(x,1;y,_screen.cy-(olhei/2.25)+40;draworder,999);
+				
+				--Jous Rewritten Part Start.
+				
+				Def.ActorFrame{
+					InitCommand=function(self) self:xy(1,SCREEN_CENTER_Y-(olhei/2.25)+40):draworder(999):zoom(.35) end, 
 					OptionsMenuChangedMessageCommand=function(self,params)
-						if params.Player == pn then
-							if params.Menu == "NoteSkins" then
-								self:playcommand("On")
-								self:stoptweening():linear(.3):diffusealpha(1);
-							else
-								self:diffusealpha(0);
-							end;
-						end;
-					end;
-					OnCommand=function(self)
-						local arrow = "UpLeft";
-						local name = "Tap note";
-						local highlightedNoteSkin = CurrentNoteSkin(pn);
-						--Constantly causes errors, just remove it
-						local path-- = NOTESKIN:GetPathForNoteSkin("", "__RIO_THUMB", CurrentNoteSkin(pn));
-						if not path then
-							if highlightedNoteSkin == "delta" then
-								name = "Ready Receptor";
-							elseif highlightedNoteSkin == "delta-note" or string.ends(highlightedNoteSkin, "rhythm") then
-								arrow = "_UpLeft";
-							end
-							path = NOTESKIN:GetPathForNoteSkin(arrow, name, CurrentNoteSkin(pn));
+						if params.Menu == "NoteSkins" then 
+							RIO.NoteskinsEnabled = true 
+							self:stoptweening():linear(.3):diffusealpha(1);
+						else
+							RIO.NoteskinsEnabled = false
+							self:diffusealpha(0);
 						end
-						
-						self:Load(path);
-						self:croptop(0);
-						self:cropright(0);
-						self:zoom(0.35);
-					end;
+						self:playcommand("Adjust",params);
+					end,
 					AdjustCommand=function(self,params)
-						if params.Player == pn then
-							if params.Selection < OPTIONSLIST_NUMNOTESKINS then
-								local highlightedNoteSkin = OPTIONSLIST_NOTESKINS[params.Selection+1];
-								local arrow = "UpLeft";
-								local name = "Tap note";
-								local path-- = NOTESKIN:GetPathForNoteSkin("", "__RIO_THUMB", highlightedNoteSkin);
-								if not path then
-									if highlightedNoteSkin == "delta" then
-										name = "Ready Receptor";
-									elseif highlightedNoteSkin == "delta-note" or string.ends(highlightedNoteSkin, "rhythm") then
-										arrow = "_UpLeft";
-									end
-									path = NOTESKIN:GetPathForNoteSkin(arrow, name, highlightedNoteSkin);
-								end
-								self:Load(path);
-								self:croptop(0);
-								self:cropright(0);
-								self:zoom(0.35);
-							else
-								self:playcommand("On");
-							end;
-						end;
-					end;
-					OptionsListRightMessageCommand=function(self,params)
+						if not RIO.NoteskinsEnabled then return end
+						self:RemoveAllChildren()
+						if params.Selection then RIO.Noteskin = params.Selection+1 end
+						self:AddChildFromPath(THEME:GetPathB("ScreenSelectMusic","overlay/Noteskin.lua"))
+					end,
+					OptionsListRightMessageCommand=function(self, params)
 						self:playcommand("Adjust",params);
 					end;
 					OptionsListLeftMessageCommand=function(self,params)
-						self:playcommand("Adjust",params);
+						self:playcommand("Adjust", params);
 					end;
-				};
+				}
+				
+				--Jous Rewritten Part End.
+				
 			};
 		end;
 	end;

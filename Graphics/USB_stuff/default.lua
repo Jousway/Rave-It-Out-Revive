@@ -12,7 +12,7 @@ local function PlayerLevel(player)
 			--setenv("level_"..currentplayer, string.format("%02d",level));
 			--end
 			
-			if DoDebug then
+			if RIO.DoDebug then
 				self:settext(" ∞");
 			else
 				self:settext("Lv. "..string.format("%02d",calcPlayerLevel(numSongs)));
@@ -139,7 +139,7 @@ t[#t+1] = Def.ActorFrame {
 	};
 
 	LoadFont("Common Normal")..{
-		Condition=(DoDebug and GAMESTATE:IsSideJoined(PLAYER_1));
+		Condition=(RIO.DoDebug and GAMESTATE:IsSideJoined(PLAYER_1));
 		InitCommand=function(self)
 			self:zoom(.5):horizalign(left):addx(100):addy(-10);
 			self:settext("Icon: "..getenv("profile_icon_P1").." Setting: "..tostring(ActiveModifiers["P1"]['ProfileIcon']));
@@ -195,7 +195,7 @@ t[#t+1] = Def.ActorFrame{
 
 	};
 	LoadFont("Common Normal")..{
-		Condition=(DoDebug and GAMESTATE:IsSideJoined(PLAYER_2));
+		Condition=(RIO.DoDebug and GAMESTATE:IsSideJoined(PLAYER_2));
 		InitCommand=function(self)
 			self:zoom(.5):horizalign(left):addx(-500):addy(-10);
 			if PROFILEMAN:ProfileWasLoadedFromMemoryCard(PLAYER_2) then

@@ -42,7 +42,7 @@ local itemy = 13	--item list y separation
 
 t[#t+1] = LoadActor(anim);
 
-if DoDebug then
+if RIO.DoDebug then
 	if haschartspecificanimation then
 		haschartspecificanimationtext = "true"
 	else
@@ -59,7 +59,7 @@ if DoDebug then
 	t[#t+1] = LoadFont(DebugFont)..{		--DEBUG: SET Timing Window Scale value
 		InitCommand=cmd(xy,SCREEN_LEFT+5,itemy*1;horizalign,left;zoom,0.5);
 		OnCommand=function(self)
-			local winval = THEME:GetMetric("CustomRIO","ForcedTimingScale")
+			local winval = RIO.ForcedTimingScale
 			self:settext("Setting TimingWindowScale value: "..winval);
 			PREFSMAN:SetPreference("TimingWindowScale",winval);
 		end;

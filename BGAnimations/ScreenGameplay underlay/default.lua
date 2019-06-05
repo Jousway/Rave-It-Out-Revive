@@ -61,7 +61,7 @@ function GetBreakCombo()		-- by ROAD24 and NeobeatIKK
 	-- Corre a cargo del thememaker cuando y por que valor se actualiza
 	local Combo = getenv("BreakCombo");
 	if Combo == nil then
-		Combo = THEME:GetMetric("CustomRIO","MissToBreak");
+		Combo = RIO.MissToBreak
 		setenv("BreakCombo",Combo);
 	end;
 	return tonumber(Combo);
@@ -236,7 +236,7 @@ t[#t+1] = Def.ActorFrame{		--Limit break by ROAD24 and NeobeatIKK
 		end;
 		
 		if IsBreakOn() then			-- Si no esta activado el break no tiene caso revisar todo lo demas
-			if THEME:GetMetric("CustomRIO","GamePlayMenu") == false then
+			if RIO.GamePlayMenu == false then
 				if GAMESTATE:IsPlayerEnabled( OpositePlayer ) then
 					bFailed = bFailed and bOpositePlayerFailed;
 				end;
@@ -343,7 +343,7 @@ t[#t+1] = Def.ActorFrame{		--Limit break by ROAD24 and NeobeatIKK
 
 ]]
 
-if DoDebug then
+if RIO.DoDebug then
 	t[#t+1] = 	Def.ActorFrame{		-- DEBUG STUFF
 		--[[LoadFont(DebugFont)..{		--Hit Mine button
 			InitCommand=cmd(xy,_screen.cx,_screen.cy-20;zoom,0.5;settext,"MINE HIT BUTTON");

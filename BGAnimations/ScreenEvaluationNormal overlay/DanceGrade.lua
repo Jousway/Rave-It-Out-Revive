@@ -257,7 +257,7 @@ if STATSMAN:GetCurStageStats():GetPlayerStageStats(player):IsDisqualified()==fal
 		};
 	end;
 	
-	if DoDebug then
+	if RIO.DoDebug then
 		t[#t+1] = Def.ActorFrame{
 			InitCommand=cmd(x,p1initx+15;y,p1inity+100;zoom,.5);
 			--Must be OnCommand because hearts have to be subtracted first in default.lua

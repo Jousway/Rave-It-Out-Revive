@@ -7,7 +7,7 @@ local t = Def.ActorFrame {
 --HAS THIS GUY EVER HEARD OF METRICS???
 local stage =		GAMESTATE:GetCurrentStage()
 --optionlist controls
-local OPLIST_WIDTH =		THEME:GetMetric("CustomRIO","OpQuadWidth")		--option list quad width
+local OPLIST_WIDTH =		RIO.OpQuadWidth		--option list quad width
 local olania =		0.1			--optionlist animation time in
 local olanib =		0.2			--optionlist animation time out
 local olhei	=		SCREEN_HEIGHT*0.75	--optionlist quadheight
@@ -405,7 +405,7 @@ else
 							elseif currentOpList == "NoteSkins" then
 								local curRow;
 								--This global var is exported by OptionRowAvailableNoteskins()
-								if OPLIST_splitAt < OPTIONSLIST_NUMNOTESKINS then
+								if OPLIST_splitAt < #RIO.NoteskinList then
 									curRow = math.floor((params.Selection)/2)+1
 								else
 									curRow = params.Selection+1
@@ -432,10 +432,10 @@ else
 							if currentOpList == "NoteSkins" then
 								local curRow;
 								--This global var is exported by OptionRowAvailableNoteskins()
-								if OPLIST_splitAt < OPTIONSLIST_NUMNOTESKINS then
-									curRow = math.floor((OPTIONSLIST_NUMNOTESKINS)/2)+1
+								if OPLIST_splitAt < #RIO.NoteskinList then
+									curRow = math.floor((#RIO.NoteskinList)/2)+1
 								else
-									curRow = OPTIONSLIST_NUMNOTESKINS+1
+									curRow = #RIO.NoteskinList+1
 								end;
 								--SCREENMAN:SystemMessage(curRow)
 								if curRow>OPLIST_ScrollAt then
@@ -482,7 +482,7 @@ else
 					end;
 					AdjustCommand=function(self,params)
 						if currentOpList == "SongMenu" then
-							if params.Selection == 5 then
+							if params.Selection == 6 then
 								self:playcommand("UpdateText",params);
 								self:visible(true);
 							else

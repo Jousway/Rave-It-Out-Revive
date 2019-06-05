@@ -35,7 +35,7 @@ t[#t+1] = Def.ActorFrame{
 
 };
 
-if DoDebug then
+if RIO.DoDebug then
 	local player = PLAYER_1;
 	t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(x,200;y,SCREEN_BOTTOM-110;zoom,.5);

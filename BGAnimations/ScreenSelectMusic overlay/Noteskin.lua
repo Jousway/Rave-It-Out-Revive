@@ -1,1 +1,3 @@
-return NOTESKIN:LoadActorForNoteSkin("UpLeft","Tap Note",RIO.NoteskinList[RIO.Noteskin] or "default")
+local GameDirections = { ["dance"] = "Down", ["pump"] = "UpLeft" }
+
+return NOTESKIN:LoadActorForNoteSkin(GameDirections[GAMESTATE:GetCurrentGame():GetName()],"Tap Note",RIO.NoteskinList[RIO.Noteskin] or "default")

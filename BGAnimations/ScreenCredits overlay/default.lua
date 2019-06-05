@@ -103,7 +103,7 @@ return Def.ActorFrame{
 		InitCommand=cmd(x,_screen.cx-(_screen.cx*0.5);y,SCREEN_BOTTOM-64),
 	},
 	LoadFont("Common normal")..{	--DEBUG: Animation time and Metric set time.
-		InitCommand=cmd(visible,DoDebug;xy,SCREEN_RIGHT,SCREEN_TOP;horizalign,right;vertalign,top;zoom,0.5;
+		InitCommand=cmd(visible,RIO.DoDebug;xy,SCREEN_RIGHT,SCREEN_TOP;horizalign,right;vertalign,top;zoom,0.5;
 		settext,"Timer Seconds: "..(creditScroller.SecondsPerItem * (#creditScroller + item_padding_start) + 20));	--sumar solo los tiempos del ultimo actor
 	};
 --[[	LoadActor(THEME:GetPathB("ScreenWithMenuElements","background/_bg top"))..{

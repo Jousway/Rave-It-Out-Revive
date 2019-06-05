@@ -86,8 +86,6 @@ RIO.Input = function(self)
 		end
 	end
 end
-<<<<<<< HEAD
-=======
 
 RIO.NoteSkins = function()
 	RIO.LoadNoteskins()
@@ -137,4 +135,4 @@ RIO.Reset = function()
 	}
 	print("RIO Values Resetted")
 end
->>>>>>> 24842d2c9ac5af132552a87e2914e03e6395cb42
+

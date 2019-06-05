@@ -482,7 +482,7 @@ else
 					end;
 					AdjustCommand=function(self,params)
 						if currentOpList == "SongMenu" then
-							if params.Selection == 5 then
+							if params.Selection == 6 then
 								self:playcommand("UpdateText",params);
 								self:visible(true);
 							else

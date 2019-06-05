@@ -5,6 +5,8 @@
 --PREFSMAN:SetPreference("VideoRenderers","d3d") -- no, dont do d3d - Jous
 --PREFSMAN:SetPreference("Vsync",0)
 
+PREFSMAN:SetPreference("Center1Player",false)
+
 PREFSMAN:SetPreference("HideIncompleteCourses",true)
 	
 PREFSMAN:SetPreference("SuperMeterPercentChangeCheckpointHit",0)

@@ -14,6 +14,7 @@ RIO.Config = function(Key,Value)
 end
 
 RIO.LoadNoteskins = function()
+	RIO.NoteskinList = {}
 	for _,v in ipairs(NOTESKIN:GetNoteSkinNames()) do
 		local ToAdd = true
 		for DisabledSkin in string.gmatch(RIO.Config("DisabledNoteskins","delta-routine-p1,delta-routine-p2,cmd-routine-p1,cmd-routine-p2,routine-p1,routine-p2,rio-p1,rio-p2,rio-p3,rio-p4,rio-p5,perfor1,perfor2,perfor3,_disabled")..",", "(.-),") do
@@ -120,7 +121,7 @@ end
 RIO.Reset = function()
 	--Init PIU_HEARTS_SYSTEM
 	Reset_PIU_Hearts()
-	
+		
 	--Reset PlayerOptions
 	ActiveModifiers = {
 		P1 = table.shallowcopy(PlayerDefaults),

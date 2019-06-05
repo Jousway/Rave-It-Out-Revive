@@ -32,6 +32,54 @@ function parallelogramGen(width,height,clr)
 	};
 end
 
+function rectGen(width, height, lineSize, bgColor)
+    return Def.ActorFrame{
+    
+        --Background transparency
+        Def.Quad{
+            InitCommand=cmd(setsize,width, height;diffuse,bgColor);
+            
+        };
+        --Bottom line
+        Def.Quad{
+            InitCommand=cmd(setsize,width + lineSize, lineSize;addy,height/2;--[[horizalign,0;vertalign,2]]);
+            
+        };
+        --Top line
+        Def.Quad{
+            InitCommand=cmd(setsize,width + lineSize, lineSize;addy,-height/2;--[[horizalign,2;vertalign,0]]); --2 = right aligned
+            
+        };
+        --Left line
+        Def.Quad{
+            InitCommand=cmd(setsize,lineSize, height + lineSize;addx,-width/2;--[[vertalign,0;horizalign,2]]); --2 = right aligned
+            
+        };
+        --Right line
+        Def.Quad{
+            InitCommand=cmd(setsize,lineSize, height + lineSize;addx,width/2;--[[vertalign,2;horizalign,0]]); --2 = bottom aligned
+            
+        };
+    };
+end;
+
+--1 indexed, because lua.
+local currentMissionNum;
+local currentGroupNum = 1;
+local NUM_MISSION_GROUPS = #RIO_COURSE_GROUPS
+
+local GroupCache = {};
+function updateGroupCache()
+	GroupCache.currentGroup = RIO_COURSE_GROUPS[currentGroupNum];
+	GroupCache.courses = SONGMAN:GetCoursesInGroup(GroupCache.currentGroup,false);
+	GroupCache.numCourses = #GroupCache.courses;
+	--Reset the mission num when switching groups.
+	currentMissionNum = 1;
+	GAMESTATE:SetCurrentCourse(GroupCache.courses[currentMissionNum]);
+	MESSAGEMAN:Broadcast("CurrentMissionGroupChanged");
+end;
+updateGroupCache();
+
 
 t[#t+1] = Def.ActorFrame{
 	Def.Sprite{
@@ -70,6 +118,10 @@ t[#t+1] = Def.ActorFrame{
 	LoadFont("Common Normal")..{
 		Text="Mission Group Name Goes here";
 		InitCommand=cmd(xy,200,90;wrapwidthpixels,300);
+		OnCommand=function(self)
+			self:settext(GroupCache.currentGroup);
+		end;
+		CurrentMissionGroupChangedMessageCommand=cmd(playcommand,"On");
 	
 	};
 	Def.Quad{
@@ -100,19 +152,52 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(setsize,410,300;diffuse,color("0,0,0,.5");xy,200+160,100;horizalign,left;vertalign,top;);
 	};
 	LoadFont("monsterrat/_montserrat semi bold 60px")..{	
-		InitCommand=cmd(xy,200+160+10,110;horizalign,left;vertalign,top;zoom,0.6;skewx,-0.255;maxwidth,650);
-		OnCommand=function(self)
-			self:settext("Mission Title Goes Here");
-			--self:uppercase(true);
-		end;
+		InitCommand=cmd(xy,200+160+410/2,110;vertalign,top;zoom,0.6;skewx,-0.255;maxwidth,650);
+		--Text="aaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+		OnCommand=cmd(settext,GroupCache.courses[currentMissionNum]:GetDisplayFullTitle();stoptweening;diffusealpha,0;x,200+160+410/2+75;decelerate,0.5;x,200+160+410/2;diffusealpha,1;);
+		CurrentCourseChangedMessageCommand=cmd(playcommand,"On");
+		CurrentMissionGroupChangedMessageCommand=cmd(playcommand,"On");
 	};
 	Def.Quad{
 		InitCommand=cmd(setsize,410,2;diffuse,color("1,1,1,1");xy,200+160,140;horizalign,left;vertalign,top;fadeleft,.8;faderight,.8;);
 	};
-	Def.Quad{
+	--[[Def.Quad{
 		InitCommand=cmd(setsize,410,80;diffuse,color("1,1,1,.2");xy,200+160,150;horizalign,left;vertalign,top;);
+	};]]
+	
+	Def.Quad{
+		InitCommand=cmd(diffuse,color("1,1,1,.5");setsize,300,35;xy,200,135;);
+		CodeMessageCommand=function(self, params)
+			if params.Name == "UpLeft" then
+				if currentGroupNum > 1 then
+					currentGroupNum = currentGroupNum-1;
+					updateGroupCache();
+				end;
+			elseif params.Name== "UpRight" then
+				if currentGroupNum < NUM_MISSION_GROUPS then
+					currentGroupNum = currentGroupNum+1;
+					updateGroupCache();
+				end;
+			elseif params.Name == "DownLeft" then
+				if currentMissionNum > 1 then
+					currentMissionNum = currentMissionNum -1;
+					GAMESTATE:SetCurrentCourse(GroupCache.courses[currentMissionNum]);
+					MESSAGEMAN:Broadcast("CurrentCourseChanged")
+					self:stoptweening():decelerate(.2):y(135+35*(currentMissionNum-1));
+				end;
+			elseif params.Name == "DownRight" then
+				if currentMissionNum < GroupCache.numCourses then
+					currentMissionNum = currentMissionNum + 1;
+					GAMESTATE:SetCurrentCourse(GroupCache.courses[currentMissionNum]);
+					MESSAGEMAN:Broadcast("CurrentCourseChanged")
+					self:stoptweening():decelerate(.2):y(135+35*(currentMissionNum-1));
+				end;
+			end;
+		end;
 	};
 };
+
+
 
 --I don't think this is correct
 local q = Def.ActorFrame{
@@ -124,16 +209,111 @@ for i = 1,6 do
 		Def.Quad{
 			InitCommand=cmd(diffuse,color(".5,.5,.5,.5");setsize,30,30);
 		};
-		LoadFont("Common Normal")..{
+		LoadFont("_roboto Bold 54px")..{
 			Text=i;
+			InitCommand=cmd(zoom,.6;addy,3);
 		};
-		LoadFont("Common Normal")..{
+		LoadFont("letters/_ek mukta Bold 24px")..{
 			Text="Mission title goes here";
-			InitCommand=cmd(horizalign,left;addx,20);
+			InitCommand=cmd(horizalign,left;x,20;addy,2);
+			OnCommand=function(self)
+				if i <= GroupCache.numCourses then
+					self:settext(GroupCache.courses[i]:GetDisplayFullTitle());
+				else
+					self:settext("");
+				end;
+			end;
 		};
 	};
 end;
-
 t[#t+1] = q;
+
+local j = Def.ActorFrame{
+	InitCommand=cmd(xy,200+160+15,130;);
+};
+--I don't expect there to be more than 4 songs.
+for i = 1,4 do
+	j[i] = Def.ActorFrame{
+		InitCommand=cmd(addy,30*i);
+		OnCommand=function(self)
+			local course = GAMESTATE:GetCurrentCourse();
+			self:stoptweening():diffusealpha(0);
+			if i <= course:GetNumCourseEntries() then
+				self:GetChild("SongName"):settext(course:GetCourseEntry(i-1):GetSong():GetDisplayFullTitle());
+				local trail = GroupCache.courses[currentMissionNum]:GetAllTrails()[i]
+				local meter = trail:GetMeter();
+				if meter >= 99 then
+					self:GetChild("Label"):settext("??");
+				else
+					self:GetChild("Label"):settextf("%02d",meter);
+				end;
+				
+				local StepsType = trail:GetStepsType();
+				local labelBG = self:GetChild("LabelBG");
+				if StepsType then
+					sString = THEME:GetString("StepsDisplay StepsType",ToEnumShortString(StepsType));
+					if sString == "Single" then
+						--There is no way to designate a single trail as DANGER, unfortunately.
+						if meter >= 99 then
+							labelBG:setstate(4);
+						else
+							labelBG:setstate(0);
+						end
+					elseif sString == "Double" then
+						labelBG:setstate(1);
+					elseif sString == "SinglePerformance" or sString == "Half-Double" then
+						labelBG:setstate(2);
+					elseif sString == "DoublePerformance" or sString == "Routine" then
+						labelBG:setstate(3);	
+					else
+						labelBG:setstate(5);
+					end;
+				end;
+				
+				self:sleep(.05*i):decelerate(.2):diffusealpha(1);
+			else
+				--Do nothing.
+			end;
+		end;
+		CurrentCourseChangedMessageCommand=cmd(playcommand,"On");
+		CurrentMissionGroupChangedMessageCommand=cmd(playcommand,"On");
+		
+		LoadActor(THEME:GetPathG("StepsDisplayListRow","frame/_icon"))..{
+			Name="LabelBG";
+			InitCommand=cmd(zoom,0.3;addy,2;animate,false);--draworder,140;);
+		};
+		LoadFont("monsterrat/_montserrat semi bold 60px")..{
+			Name="Label";
+			InitCommand=cmd(zoom,0.25;skewx,-0.15;y,0.5);
+		};
+		-- NEW LABEL
+		--[[LoadActor(THEME:GetPathG("StepsDisplayListRow","frame/danger"))..{
+			InitCommand=cmd(zoom,0.5;y,22);
+			OnCommand=cmd(diffuseshift; effectoffset,1; effectperiod, 0.5; effectcolor1, 1,1,0,1; effectcolor2, 1,1,1,1;);
+			SetMessageCommand=function(self,param)
+				profile = PROFILEMAN:GetMachineProfile();
+				scorelist = profile:GetHighScoreList(GAMESTATE:GetCurrentSong(),param.Steps);
+				scores = scorelist:GetHighScores();
+				topscore = scores[1];
+				
+				local descrp = param.Steps:GetDescription();
+
+				if descrp == "DANGER!" then
+					self:visible(true);
+				else
+					self:visible(false);
+				end;
+			
+			end;
+		};]]
+		LoadFont("facu/_zona pro bold 40px")..{
+			Name="SongName";
+			Text="Song names here";
+			InitCommand=cmd(horizalign,left;zoom,.5;addx,15);
+
+		};
+	};
+end;
+t[#t+1] = j;
 
 return t;

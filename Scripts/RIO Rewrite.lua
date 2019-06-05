@@ -22,8 +22,8 @@ for _,v in ipairs(NOTESKIN:GetNoteSkinNames()) do
 end
 
 RIO.DoDebug = ToBoolean(RIO.Config("DebugMode","false"))
-RIO.InternalName = RIO.Config("InternalName","RIOS2")
-RIO.Version = RIO.Config("Version","Storm 2019")
+RIO.InternalName = RIO.Config("InternalName","RIO Revive")
+RIO.Version = RIO.Config("Version","Unstable")
 RIO.ScreenInRatio =  RIO.Config("FadeInRatio",0.25)
 RIO.AnimationInLength = RIO.Config("FadeInTween",0.25)
 RIO.ScreenOutRatio =  RIO.Config("FadeOutRatio",0.25)

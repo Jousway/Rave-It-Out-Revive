@@ -19,6 +19,8 @@ local t = Def.ActorFrame{
 			if timer > 0 then
 				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToPrevScreen");
 			end;
+		elseif params.Name == "Secret" then
+			SCREENMAN:SetNewScreen("ScreenGreetz");
 		else
 			SCREENMAN:SystemMessage("Unknown button: "..params.Name);
 		end;

@@ -1,6 +1,5 @@
 local isWheelCustom = ...
 local shine_index = 0;
-local streamSafeMode = (ReadPrefFromFile("StreamSafeEnabled") == "true");
 
 --GAMESTATE:SetCurrentSong(SONGMAN:FindSong("3y3s"))
 extraStageSong = nil;
@@ -76,53 +75,17 @@ return Def.ActorFrame{
 			CurrentSongChangedMessageCommand=cmd(stoptweening;Load,nil;sleep,.4;queuecommand,"PlayVid2");
 			PlayVid2Command=function(self)
 				--self:Load(nil);
-				if streamSafeMode and has_value(STREAM_UNSAFE_AUDIO, GAMESTATE:GetCurrentSong():GetDisplayFullTitle() .. "||" .. GAMESTATE:GetCurrentSong():GetDisplayArtist()) then
-					self:diffusealpha(0);
-					self:Load(nil);
-					return;
-				else
+				
 					local song = GAMESTATE:GetCurrentSong()
 					path = GetBGAPreviewPath("PREVIEWVID");
 					--path = song:GetBannerPath();
 					self:Load(path);
-				end;
+				
 				self:diffusealpha(0);
 				self:zoomto(384,232);
 				self:linear(0.2);
-				if path == "/Backgrounds/Title.mp4" then
-					self:diffusealpha(0.5);
-				else
-					self:diffusealpha(1);
-				end
+				self:diffusealpha(1);
 			end;
-		};
-		--TODO: Remove this when hiding songs works correctly!
-		Def.ActorFrame{
-			InitCommand=cmd(x,_screen.cx;y,_screen.cy-30;visible,false);
-			CurrentSongChangedMessageCommand=function(self)
-				if streamSafeMode and has_value(STREAM_UNSAFE_AUDIO, GAMESTATE:GetCurrentSong():GetDisplayFullTitle() .. "||" .. GAMESTATE:GetCurrentSong():GetDisplayArtist()) then
-					self:visible(true);
-					self:sleep(.8):queuecommand("MuteAudio");
-				else
-					self:visible(false);
-				end;
-			end;
-			MuteAudioCommand=function(self)
-				--SOUND:DimMusic(0,65536);
-				SOUND:StopMusic();
-				--SOUND:PlayOnce(THEME:GetPathS("","ScreenSelectMusic StreamWarning"));
-			end;
-			LoadActor(THEME:GetPathG("","noise"))..{
-				InitCommand=cmd(texcoordvelocity,0,8;customtexturerect,0,0,1,1;cropto,384,232;diffuse,color(".5,.5,.5,1"));
-			};
-			LoadActor("temp_contentid")..{
-				InitCommand=cmd(zoom,.5;diffuse,color(".5,.5,.5,1"));
-			
-			};
-			LoadFont("Common Normal")..{
-				Text=THEME:GetString("ScreenSelectMusic","StreamUnsafe");
-				InitCommand=cmd(wrapwidthpixels,300;);
-			};
 		};
 	
 		LoadActor("preview_songinfo")..{

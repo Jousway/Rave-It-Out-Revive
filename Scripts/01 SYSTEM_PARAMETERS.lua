@@ -5,8 +5,8 @@ RIO:2018-10-04
 DISPLAY TYPE: HD
 ]]
 SysInfo = {
-	InternalName = "RIOS2",
-	Version = "Storm 2019",
+	InternalName = "RIO Revive",
+	Version = "Unstable",
 }
 
 RIO_FOLDER_NAMES = {

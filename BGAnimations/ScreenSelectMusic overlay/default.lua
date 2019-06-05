@@ -7,7 +7,7 @@ local t = Def.ActorFrame {
 --HAS THIS GUY EVER HEARD OF METRICS???
 local stage =		GAMESTATE:GetCurrentStage()
 --optionlist controls
-local OPLIST_WIDTH =		THEME:GetMetric("CustomRIO","OpQuadWidth")		--option list quad width
+local OPLIST_WIDTH =		RIO.OpQuadWidth		--option list quad width
 local olania =		0.1			--optionlist animation time in
 local olanib =		0.2			--optionlist animation time out
 local olhei	=		SCREEN_HEIGHT*0.75	--optionlist quadheight

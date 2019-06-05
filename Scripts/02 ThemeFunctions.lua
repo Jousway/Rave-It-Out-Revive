@@ -1,17 +1,5 @@
---DoDebug = THEME:GetMetric("CustomRIO","DevMode")
-DoDebug = false;
 --[[FIXED FONTS]]
 DebugFont =		"Common normal"
-
---[[ALIASES]]			--
-Enjoy1stStage = 		THEME:GetMetric("CustomRIO","Enjoy1stStage")		--
-Enjoy1stStagePMode = 	THEME:GetMetric("CustomRIO","Enjoy1stStagePMode")	--
---[[GLOBAL VALUES]]
-WallpaperSleepTime =	THEME:GetMetric("CustomRIO","WallpaperSleepTime")	--
-FadeInRatio =			THEME:GetMetric("CustomRIO","FadeInRatio")	--
-FadeInTween =			THEME:GetMetric("CustomRIO","FadeInTween")	--
-FadeOutRatio =			THEME:GetMetric("CustomRIO","FadeOutRatio")	--
-FadeOutTween =			THEME:GetMetric("CustomRIO","FadeOutTween")	--
 
 --[[Judgement/Combo animation]]
 --Note: Anything involving Combo Numbers also affects "Combo/Miss" label
@@ -153,8 +141,8 @@ end;
 --Take a wild guess as to what this does
 --Asks for numSongsPlayed instead of profile because of ScreenSelectProfile complexity...
 function calcPlayerLevel(numSongsPlayed)
-	local uplevelfactor = THEME:GetMetric("CustomRIO","NumSongsToLevelUp");
-	local maxlevelnum = THEME:GetMetric("CustomRIO","MaxLevel");
+	local uplevelfactor = RIO.NumSongsToLevelUp
+	local maxlevelnum = RIO.MaxLevel 
 	if numSongsPlayed > maxlevelnum*uplevelfactor then
 		return maxlevelnum;
 	else
@@ -166,7 +154,7 @@ end
 function getAvailableGroups()
 	local groups = SONGMAN:GetSongGroupNames();
 
-	if not DoDebug then
+	if not RIO.DoDebug then
 		--Remove easy and special folder from the group select
 		for k,v in pairs(groups) do
 			if v == RIO_FOLDER_NAMES["EasyFolder"] then

@@ -4,7 +4,7 @@ local sepx = 20
 t[#t+1] = Def.ActorFrame{
 	Def.Actor{		--reset Limit Break / "BreakCombo" env value	--temporary workaround
 		OnCommand=function(self)
-			Combo = THEME:GetMetric("CustomRIO","MissToBreak");
+			Combo = RIO.MissToBreak
 			PrevCombo = getenv("BreakCombo");
 			setenv("BreakCombo",Combo);
 			

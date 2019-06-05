@@ -95,7 +95,7 @@ return Def.ActorFrame{
 	
 	--Debug
 	LoadFont(DebugFont)..{	--songhasmsg
-		Condition=DoDebug;
+		Condition=RIO.DoDebug;
 		InitCommand=cmd(xy,SCREEN_RIGHT,SCREEN_BOTTOM-(itemy*1);horizalign,right;zoom,0.5);
 		OnCommand=function(self)
 			if songhasmsg then

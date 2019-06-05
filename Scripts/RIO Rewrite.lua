@@ -23,14 +23,27 @@ RIO.LoadNoteskins = function()
 	end
 end	
 
+RIO.LowSpec = ToBoolean(RIO.Config("LowSpec","false"))
 RIO.DoDebug = ToBoolean(RIO.Config("DebugMode","false"))
+
 RIO.InternalName = RIO.Config("InternalName","RIOS2")
 RIO.Version = RIO.Config("Version","Storm 2019")
+
+RIO.LockSongs = ToBoolean(RIO.Config("LockSongs","true"))
+RIO.NumSongsToLevelUp = RIO.Config("NumSongsToLevelUp",4)
+RIO.MaxLevel = RIO.Config("MaxLevel",100)
+
+RIO.GamePlayMenu = ToBoolean(RIO.Config("GamePlayMenu","false"))
+RIO.MissToBreak = RIO.Config("MissToBreak",51)
+RIO.ForcedTimingScale = RIO.Config("ForcedTimingScale",1.000000)
+
+RIO.OpQuadWidth = RIO.Config("OpQuadWidth",185)
 RIO.ScreenInRatio =  RIO.Config("FadeInRatio",0.25)
 RIO.AnimationInLength = RIO.Config("FadeInTween",0.25)
 RIO.ScreenOutRatio =  RIO.Config("FadeOutRatio",0.25)
 RIO.AnimationOutLength = RIO.Config("FadeOutTween",0.25)
 
+RIO.IsMemcardEnabled = PREFSMAN:GetPreference("MemoryCards") and PREFSMAN:GetPreference("MemoryCardProfiles")
 
 RIO.TitleMenu = function()
 	if GAMESTATE:GetCoinMode() == "CoinMode_Home" then
@@ -60,7 +73,7 @@ RIO.UnlockCheck = function(LockedSong)
 	return -1
 end
 
-function RIO.Input(self)
+RIO.Input = function(self)
 	return function(event)
 		if not event.PlayerNumber then return end
 		self.pn = event.PlayerNumber		
@@ -73,7 +86,7 @@ function RIO.Input(self)
 	end
 end
 
-function RIO.NoteSkins()
+RIO.NoteSkins = function()
 	RIO.LoadNoteskins()
 	local t = {
 		Name="NoteskinsCustom",
@@ -102,4 +115,22 @@ function RIO.NoteSkins()
 	}
 	setmetatable(t, t)
 	return t
+end
+
+RIO.Reset = function()
+	--Init PIU_HEARTS_SYSTEM
+	Reset_PIU_Hearts()
+	
+	--Reset PlayerOptions
+	ActiveModifiers = {
+		P1 = table.shallowcopy(PlayerDefaults),
+		P2 = table.shallowcopy(PlayerDefaults),
+		--MACHINE = table.shallowcopy(PlayerDefaults),
+		--Save values here if editing profile
+	}
+	PerfectionistMode = {
+		PlayerNumber_P1 = false,
+		PlayerNumber_P2 = false
+	}
+	print("RIO Values Resetted")
 end

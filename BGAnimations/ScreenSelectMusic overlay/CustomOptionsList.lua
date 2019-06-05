@@ -8,7 +8,7 @@ No placement options to configure, I don't have time to be doing that.
 Figure out how to modify it yourself.
 ]]
 --optionlist controls
-local OPLIST_WIDTH =		THEME:GetMetric("CustomRIO","OpQuadWidth")		--option list quad width
+local OPLIST_WIDTH =		RIO.OpQuadWidth		--option list quad width
 local LIST_Y_OFFSET = -100 --The offset of the items and cursor. The OptionsList itself is Y centered, so this will add to that.
 local MAX_ITEMS_BEFORE_SCROLL = THEME:GetMetric("OptionsList","MaxItemsBeforeSplit") --
 local olania =		0.1			--optionlist animation time in

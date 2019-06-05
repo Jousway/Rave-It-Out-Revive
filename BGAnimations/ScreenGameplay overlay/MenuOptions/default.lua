@@ -84,6 +84,8 @@ AddLine("Select New Song");
 AddLine("Exit to Title Menu");
 AddLine("Exit Game");
 
+local LowSpec = { [true] = "BGADArcade.jpg", [false] = "RIOArcade.avi" }
+
 return Def.ActorFrame{
 	OptionsScroller..{
 		Name="MenuOptions";
@@ -94,7 +96,7 @@ return Def.ActorFrame{
 		Name="MenuObjects";
 		InitCommand=cmd(draworder,100;visible,false;);
 		--This is shown when the player pauses the game, probably...
-		LoadActor(THEME:GetPathG("","_BGMovies/arcade"))..{
+		LoadActor(THEME:GetPathG("","_BGMovies/"..LowSpec[RIO.LowSpec]))..{
 			InitCommand=cmd(draworder,1;Center;zoomto,default_width,SCREEN_HEIGHT;);
 		};
 		
@@ -109,7 +111,7 @@ return Def.ActorFrame{
 		local stagebreak = IsBreakOn();
 		local misscombo = GetBreakCombo();
 		local this = self:GetChildren();
-		if THEME:GetMetric("CustomRIO","GamePlayMenu") == true then
+		if RIO.GamePlayMenu == true then
 		
 		if GAMESTATE:GetNumSidesJoined() == 2 and stagebreak then
 		-- 2 players

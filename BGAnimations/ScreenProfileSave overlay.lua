@@ -92,7 +92,7 @@ t[#t+1] = Def.Actor {
 	end;
 };
 
-if DoDebug then
+if RIO.DoDebug then
 	t[#t+1] = LoadFont("Common Normal")..{	--percentage scoring P1
 		InitCommand=cmd(zoom,2;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y);
 		Text=curstage.." - Delay: "..NextStageSleepTime;

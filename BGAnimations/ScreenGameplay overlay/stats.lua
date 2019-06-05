@@ -73,7 +73,7 @@ end;
 
 
 t[#t+1] = Def.ActorFrame{		-- DEBUG STUFF
-	Condition=DoDebug;		--Don't show anything on this group if not executing Debug Mode
+	Condition=RIO.DoDebug;		--Don't show anything on this group if not executing Debug Mode
 	LoadFont("Common normal")..{		--[DEBUG] Column being pressed, by Alisson
 		InitCommand=cmd(xy,_screen.cx,_screen.cy+10;zoom,0.5;);
 	--	ComboChangedMessageCommand=cmd(settext,customscore);

@@ -1,0 +1,157 @@
+#Code/Theme by NeobeatIKK (Sergio Madrid), Jose Jesus, and Alisson de Oliveira.
+#for RIO project by Christopher Cortes
+#this file does ponies, rainbows and shit
+
+[ThemeOptions]
+#used by Gameplay overlay\_MenuOptions
+UseStageLimit=false
+StageNumber=99
+UseStageBreak=true
+StageBreakOnComboBreak=51
+
+
+[CustomRIO]
+###       THEME:GetMetric("metricsgroup","metric")   ###
+###   ex: THEME:GetMetric("CustomRIO","DoDebug")     ###
+# with this, we can easily activate or deactivate
+#  debug functions written in theme luas. -NeobeatIKK
+
+#Number of songs required per level.
+NumSongsToLevelUp=4
+MaxLevel=100
+
+
+#Alisson Mods
+# Some kind of a "God mode", where devs can access features didnt availables in arcade  mode.
+# Also shows debugging information.
+DevMode=false
+#This isn't used anymore but SM keeps complaining about it being missing and I can't figure out why
+DoDebug=false
+#Unknown function
+GamePlayMenu=false
+RoutineNumberPlayers=2
+
+# NotDebug for ScreenInformation use
+NotDebug=true
+# LockSongs default value is: true
+LockSongs=true
+#	Used by LimitBreak system (ScreenGameplay) Tells the function how many
+#	Misses to combo until break a stage if not set by the txt system
+MissToBreak=51
+# Also by LimitBreak system (ScreenGameplay) (a la Pop'n Music)
+Enjoy1stStage=true
+# same as above but controls Perfectionist Mode 1st Stage behavior
+Enjoy1stStagePMode=true
+# (global) duration of transition/wallpaper screens (in seconds)
+WallpaperSleepTime=6
+
+#used by screeninformation
+;1 = TimingWindowScale=1.500000
+;2 = TimingWindowScale=1.330000
+;3 = TimingWindowScale=1.160000		^-- easier values
+;4 = TimingWindowScale=1.000000	-- default value
+;5 = TimingWindowScale=0.840000		v-- harder values
+;6 = TimingWindowScale=0.660000			<-- RIO public release value
+;7 = TimingWindowScale=0.500000
+;8 = TimingWindowScale=0.330000
+;J = TimingWindowScale=0.200000
+ForcedTimingScale=1.000000
+
+;used by OptionList in ScreenSelectMusic, caution: this --
+;value affects many other values linked to this.
+OpQuadWidth = 185
+
+FadeInRatio=0.25
+FadeInTween=0.25
+FadeOutRatio=0.25
+FadeOutTween=0.25
+
+#RIO Build start
+
+[CustomItems]
+# Items for charts (Missions, gimmicks, etc)
+;already in _fallback, leave here for reference
+ItemsName="Blink,Down,Left,Mine,Overhead,Potion,SpeedX1,SpeedX2,SpeedX3,SpeedX4,SpeedX8"
+
+#RIO Build end
+[Common]
+InitialScreen="RIOScreenInit"
+
+NSBankMaxNumber=9
+NoteSkinBank00="rio"
+NoteSkinBank01="rio-p1"
+NoteSkinBank02="rio-p2"
+NoteSkinBank03="rio-p3"
+NoteSkinBank04="rio-p4"
+NoteSkinBank05="rio-p5"
+NoteSkinBank06="default"
+NoteSkinBank07="f2"
+NoteSkinBank08="infinity"
+NoteSkinBank09="prime"
+
+;Don't mess with AutoSetStyle. Does bad things.
+AutoSetStyle=true
+
+		# The number of entries before "Various" is shown on the BPMDisplay, etc.
+		;MaxCourseEntriesBeforeShowVarious=10
+		;FirstAttractScreen="ScreenDemonstration"
+
+# Screens that show over everything else.
+# Only mess with this if you know what you're doing.
+		;OverlayScreens="ScreenSystemLayer,ScreenSyncOverlay,ScreenStatsOverlay,ScreenDebugOverlay,ScreenConsoleOverlay,ScreenInstallOverlay"
+;Overlays for final version
+;OverlayScreens="ScreenSyncOverlay,ScreenConsoleOverlay,ScreenInstallOverlay"
+
+;RIO build new metrics
+#I think it's pretty obvious why these are hidden
+#This is a custom implementation and not part of SM5! Check OptionRowAvailableNoteskins() and OptionsList
+NoteSkinsToHide="delta-routine-p1,delta-routine-p2,cmd-routine-p1,cmd-routine-p2,routine-p1,routine-p2,rio-p1,rio-p2,rio-p3,rio-p4,rio-p5,perfor1,perfor2,perfor3,_disabled"
+
+CourseDifficultiesToShow="medium,hard"
+SortSongsByPath=false
+
+#RIO has a hardcoded limit of 10 characters because I said so.
+NoScoreName="NOPROFILE"
+
+# We want to define which Images to cache.
+# Predefined Images include: Banner,Background,CDTitle,Jacket,CDImage,Disc
+# Is Case Sensitive
+ImageCache="Jacket,Banner"
+
+[UnlockManager]
+# Unlock harder/different steps based on passing easier steps.
+AutoLockChallengeSteps=false
+AutoLockEditSteps=false
+# determine if songs loaded via AdditionalSongs should be locked.
+SongsNotAdditional=true
+
+UnlockNames="Unlock1"
+Unlock1Command=song,"Test Song"
+# useful commands:
+# require,(UnlockRequirement),(value);
+# where (UnlockRequirement) is one of the UnlockRequirement enum values.
+
+# song,(Song Name);
+# sets a Song to be unlocked
+
+# course,(Course Name);
+# sets a Course to be unlocked
+
+# roulette;
+# Song shows up in roulette (useful with Song only)
+
+# mod,(modifier);
+# sets a modifier to be unlocked.
+
+# code,(code);
+# assigns a code to the unlock
+
+# examples:
+# 1) The song "Pledge" requires 500 AP.
+# Unlock1Command=song,"Pledge";require,"UnlockRequirement_ArcadePoints",500
+
+# 2) The song "ABC" can be unlocked via roulette; pick an arbitrary code
+# to use to store the unlock.
+# Unlock2Command=song,"ABC";code,"59183751";roulette
+
+# 03 #

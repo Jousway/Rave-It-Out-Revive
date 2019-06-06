@@ -27,8 +27,8 @@ end
 RIO.LowSpec = ToBoolean(RIO.Config("LowSpec","false"))
 RIO.DoDebug = ToBoolean(RIO.Config("DebugMode","false"))
 
-RIO.InternalName = RIO.Config("InternalName","RIOS2")
-RIO.Version = RIO.Config("Version","Storm 2019")
+RIO.InternalName = RIO.Config("InternalName","RIO Revive")
+RIO.Version = RIO.Config("Version","Unstable")
 
 RIO.LockSongs = ToBoolean(RIO.Config("LockSongs","true"))
 RIO.NumSongsToLevelUp = RIO.Config("NumSongsToLevelUp",4)
@@ -223,3 +223,4 @@ RIO.Reset = function()
 	}
 	print("RIO Values Resetted")
 end
+

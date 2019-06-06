@@ -23,7 +23,8 @@ local Windowed = { [true] = "Windowed", [false] = "Fullscreen" }
 
 return Def.ActorFrame{
 	OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(RIO.Input(self)) end,
-	StartCommand=function(self)  SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen") end,
+	SelectCommand=function(self) SCREENMAN:GetTopScreen():SetNextScreenName("RIOScreenGreetz") end,
+	StartCommand=function(self) SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen") end,
 	EasyText("Press START to exit.",function(self) self:xy(SCREEN_CENTER_X,SCREEN_HEIGHT-50) end),
 	EasyText("System Information",function(self) self:xy(SCREEN_CENTER_X,20) end),
 	EasyText("Rave It Out version: "..RIO.Version,function(self) self:xy(SCREEN_CENTER_X,40) end),

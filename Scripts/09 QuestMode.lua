@@ -18,4 +18,4 @@ So let's say you completed 3 out of 5 missions for the group it's set to 2, now 
 go on to the next group.
 ]]
 NUM_MISSIONS_SKIPPABLE = 2
-RIO_COURSES = ["An Example Group"]
+RIO_COURSE_GROUPS = {"An Example Group"}

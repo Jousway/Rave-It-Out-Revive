@@ -45,36 +45,38 @@ RIO.AnimationInLength = RIO.Config("FadeInTween",0.25)
 RIO.ScreenOutRatio =  RIO.Config("FadeOutRatio",0.25)
 RIO.AnimationOutLength = RIO.Config("FadeOutTween",0.25)
 
-RIO.Hearts = {
+RIO.Acc = {0,0}
+
+RIO.Hearts = {}
+
+RIO.Hearts.Values = {
 	["HeartsLeft"] = { tonumber(RIO.Config("HeartsPerPlay",6)), tonumber(RIO.Config("HeartsPerPlay",6)) },
 	["BonusHearts"] = {0,0},
 	["HeartsRemoved"] = {0,0}
 }
 
-RIO.HeartSys = function(Type,Amount,pn)
-	RIO.Hearts[Type][pn] = RIO.Hearts[Type][pn] + Amount
-	return RIO.Hearts[Type][pn] >= tonumber(RIO.Config("HeartsPerPlay",6))
+RIO.Hearts.HeartSys = function(Type,Amount,pn)
+	RIO.Hearts.Values[Type][pn] = RIO.Hearts.Values[Type][pn] + Amount
+	return RIO.Hearts.Values[Type][pn] >= tonumber(RIO.Config("HeartsPerPlay",6))
 end
 
-RIO.CheckHearts = function() return RIO.HeartSys("HeartsRemoved",0,1) or RIO.HeartSys("HeartsRemoved",0,1) end
+RIO.Hearts.CheckHearts = function() return RIO.Hearts.HeartSys("HeartsRemoved",0,1) or RIO.Hearts.HeartSys("HeartsRemoved",0,1) end
 
-RIO.SongHearts = function() if GAMESTATE:GetCurrentSong() then return GetSongExtraData(GAMESTATE:GetCurrentSong(), "Hearts") else return 0 end end
+RIO.Hearts.SongHearts = function() if GAMESTATE:GetCurrentSong() then return GetSongExtraData(GAMESTATE:GetCurrentSong(), "Hearts") else return 0 end end
 
-RIO.MaxHeartsLeftForAnyPlayer = function() 
+RIO.Hearts.MaxHeartsLeftForAnyPlayer = function() 
 	local IHP = function(p) return GAMESTATE:IsHumanPlayer(p) end
-	if IHP(PLAYER_1) and IHP(PLAYER_2) then return math.max(RIO.Hearts["HeartsLeft"][1],RIO.Hearts["HeartsLeft"][2]) end
-	return RIO.Hearts["HeartsLeft"][tonumber(string.match(GAMESTATE:GetMasterPlayerNumber(),"%d"))]
+	if IHP(PLAYER_1) and IHP(PLAYER_2) then return math.max(RIO.Hearts.Values["HeartsLeft"][1],RIO.Hearts.Values["HeartsLeft"][2]) end
+	return RIO.Hearts.Values["HeartsLeft"][tonumber(string.match(GAMESTATE:GetMasterPlayerNumber(),"%d"))]
 end
 
-RIO.Acc = {0,0}
-
-RIO.BonusHearts = function(pn)
-	if RIO.Hearts["BonusHearts"][pn] < 2 or GAMESTATE:IsSideJoined("PlayerNumber_P"..pn) then
+RIO.Hearts.BonusHearts = function(pn)
+	if RIO.Hearts.Values["BonusHearts"][pn] < 2 or GAMESTATE:IsSideJoined("PlayerNumber_P"..pn) then
 		return RIO.Acc[pn] > 90 or ToBoolean(RIO.Config("AlwaysGetBonusHearts","false"))
 	end
 end
 
-RIO.UnlockedOMES = function()
+RIO.Hearts.UnlockedOMES = function()
 	return false -- need to properly rewrite this, disable for now
 end
 
@@ -204,7 +206,7 @@ end;
 
 RIO.Reset = function()
 
-	RIO.Hearts = {
+	RIO.Hearts.Values = {
 		["HeartsLeft"] = { tonumber(RIO.Config("HeartsPerPlay",6)), tonumber(RIO.Config("HeartsPerPlay",6)) },
 		["BonusHearts"] = {0,0},
 		["HeartsRemoved"] = {0,0}

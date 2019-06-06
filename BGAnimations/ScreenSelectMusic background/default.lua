@@ -4,7 +4,7 @@ local t = Def.ActorFrame {
 
 	LoadActor("sounds");	--lel sounds
 	};
-if RIO.CheckHearts() then
+if RIO.Hearts.CheckHearts() then
 	t[#t+1] = Def.Sprite{
 		Texture=THEME:GetPathG("","_BGMovies/BGAOFF");
 		InitCommand=function(self)
@@ -41,16 +41,16 @@ if RIO.DoDebug then
 		InitCommand=cmd(x,200;y,SCREEN_BOTTOM-110;zoom,.5);
 		--Must be OnCommand because hearts have to be subtracted first in default.lua
 		LoadFont("Common Normal")..{
-			OnCommand=cmd(settext,pname(player).." hearts left: "..RIO.Hearts["HeartsLeft"][1];);
+			OnCommand=cmd(settext,pname(player).." hearts left: "..RIO.Hearts.Values["HeartsLeft"][1];);
 		};
 		LoadFont("Common Normal")..{
-			OnCommand=cmd(settext,pname(player).." hearts removed: "..RIO.Hearts["HeartsRemoved"][1].. "(excluding bonus hearts)";addy,20);
+			OnCommand=cmd(settext,pname(player).." hearts removed: "..RIO.Hearts.Values["HeartsRemoved"][1].. "(excluding bonus hearts)";addy,20);
 		};
 		LoadFont("Common Normal")..{
-			OnCommand=cmd(settext,pname(player).." bonus hearts: "..RIO.Hearts["BonusHearts"][1];addy,40);
+			OnCommand=cmd(settext,pname(player).." bonus hearts: "..RIO.Hearts.Values["BonusHearts"][1];addy,40);
 		};
 		LoadFont("Common Normal")..{
-			OnCommand=cmd(settext,"Extra Stage? "..boolToString(RIO.CheckHearts());addy,60);
+			OnCommand=cmd(settext,"Extra Stage? "..boolToString(RIO.Hearts.CheckHearts());addy,60);
 		};
 		LoadFont("Common Normal")..{
 			OnCommand=cmd(settext,"Cur Stage: "..(GAMESTATE:GetCurrentStageIndex()+1).."/"..PREFSMAN:GetPreference("SongsPerPlay");addy,80);

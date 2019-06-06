@@ -79,14 +79,14 @@ return Def.ActorFrame{
 		};
 	};
 	LoadFont("letters/_ek mukta Bold 40px")..{
-		Condition=RIO.UnlockedOMES();
+		Condition=RIO.Hearts.UnlockedOMES();
 		Text=THEME:GetString("ScreenStageInformation","GetFullCombo");
 		InitCommand=cmd(Center;addx,600;diffusealpha,0;--[[diffuseleftedge,Color("Purple");faderight,1]]);
 		OnCommand=cmd(decelerate,inanit+inefft;addx,-600;diffusealpha,.5;linear,stayat;diffusealpha,1;);
 		OffCommand=cmd(decelerate,outtwt;diffusealpha,0);
 	};
 	LoadFont("letters/_ek mukta Bold 40px")..{
-		Condition=RIO.UnlockedOMES();
+		Condition=RIO.Hearts.UnlockedOMES();
 		Text=THEME:GetString("ScreenStageInformation","GetFullCombo");
 		InitCommand=cmd(Center;addx,-600;diffusealpha,0;--[[diffuserightedge,Color("Blue");fadeleft,1]]);
 		OnCommand=cmd(decelerate,inanit+inefft;addx,600;diffusealpha,.5;linear,stayat;diffusealpha,1;);

@@ -260,13 +260,13 @@ if STATSMAN:GetCurStageStats():GetPlayerStageStats(player):IsDisqualified()==fal
 			InitCommand=cmd(x,p1initx+15;y,p1inity+100;zoom,.5);
 			--Must be OnCommand because hearts have to be subtracted first in default.lua
 			LoadFont("Common Normal")..{
-				OnCommand=cmd(settext,pname(player).." hearts left: "..RIO.Hearts["HeartsLeft"][pn]);
+				OnCommand=cmd(settext,pname(player).." hearts left: "..RIO.Hearts.Values["HeartsLeft"][pn]);
 			};
 			LoadFont("Common Normal")..{
-				OnCommand=cmd(settext,pname(player).." hearts removed: "..RIO.Hearts["HeartsRemoved"][pn].. "(excluding bonus hearts)";addy,20);
+				OnCommand=cmd(settext,pname(player).." hearts removed: "..RIO.Hearts.Values["HeartsRemoved"][pn].. "(excluding bonus hearts)";addy,20);
 			};
 			LoadFont("Common Normal")..{
-				OnCommand=cmd(settext,pname(player).." bonus hearts: "..RIO.Hearts["BonusHearts"][pn];addy,40);
+				OnCommand=cmd(settext,pname(player).." bonus hearts: "..RIO.Hearts.Values["BonusHearts"][pn];addy,40);
 			};
 			LoadFont("Common Normal")..{
 				OnCommand=cmd(settext,pname(player).." got bonus heart? "..boolToString(PlayerAchievedBonusHeart(player));addy,60);

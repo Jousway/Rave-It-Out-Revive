@@ -76,7 +76,7 @@ if IsUsingWideScreen() then
 		};
 	end;
 
-	for i=1,RIO.Hearts["HeartsLeft"][1] do
+	for i=1,RIO.Hearts.Values["HeartsLeft"][1] do
 		t[#t+1] = LoadActor("heart_foreground") .. {
 			--The order of diffuseshift matters! Make sure you put it BEFORE effectcolor1 and effectcolor2!
 			InitCommand=cmd(zoom,0.5;x,heartXPos+i*16-heartsLength/2;y,SCREEN_BOTTOM-10;horizalign,right;diffuseshift;effectcolor1,color("#FFFFFF");effectcolor2,color("#FFFFFF");visible,GAMESTATE:IsSideJoined(PLAYER_1));
@@ -87,7 +87,7 @@ if IsUsingWideScreen() then
 				end
 			end;]]
 			CurrentSongChangedMessageCommand=function(self)
-				if i > RIO.Hearts["HeartsLeft"][1]-RIO.SongHearts() then
+				if i > RIO.Hearts.Values["HeartsLeft"][1]-RIO.Hearts.SongHearts() then
 					self:effectcolor1(color("#7e7e7e"))
 				else
 					self:effectcolor1(color("#FFFFFF"))
@@ -103,7 +103,7 @@ else
 			InitCommand=cmd(zoom,.5;);
 		};
 		LoadFont("common normal")..{
-			Text="x"..RIO.Hearts["HeartsLeft"][1],
+			Text="x"..RIO.Hearts.Values["HeartsLeft"][1],
 			InitCommand=cmd(zoom,.5;horizalign,left;addx,7);
 		};
 	};
@@ -254,11 +254,11 @@ if IsUsingWideScreen() then
 		};
 	end;
 
-	for i=1,RIO.Hearts["HeartsLeft"][2] do
+	for i=1,RIO.Hearts.Values["HeartsLeft"][2] do
 		t[#t+1] = LoadActor("heart_foreground") .. {
 			InitCommand=cmd(zoom,0.5;x,(SCREEN_RIGHT-heartXPos)+i*16-heartsLength/2;y,SCREEN_BOTTOM-10;horizalign,right;diffuseshift;effectcolor1,color("#FFFFFF");effectcolor2,color("#FFFFFF");visible,GAMESTATE:IsSideJoined(PLAYER_2));
 			CurrentSongChangedMessageCommand=function(self)
-				if i > RIO.Hearts["HeartsLeft"][2]-RIO.SongHearts() then
+				if i > RIO.Hearts.Values["HeartsLeft"][2]-RIO.Hearts.SongHearts() then
 					self:effectcolor1(color("#7e7e7e"))
 				else
 					self:effectcolor1(color("#FFFFFF"))
@@ -274,7 +274,7 @@ else
 			InitCommand=cmd(zoom,.5;);
 		};
 		LoadFont("common normal")..{
-			Text="x"..RIO.Hearts["HeartsLeft"][2];
+			Text="x"..RIO.Hearts.Values["HeartsLeft"][2];
 			InitCommand=cmd(zoom,.5;horizalign,left;addx,7);
 		};
 	};

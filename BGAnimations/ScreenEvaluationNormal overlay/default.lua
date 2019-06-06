@@ -93,7 +93,7 @@ end;
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	t[#t+1] = LoadActor("DanceGrade",pn);
 end;
-if RIO.UnlockedOMES() then
+if RIO.Hearts.UnlockedOMES() then
 	t[#t+1] = LoadFont("monsterrat/_montserrat semi bold 60px")..{
 		Text=THEME:GetString("ScreenEvaluation","TryOneMoreExtraStage");
 		InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM-100;diffusealpha,0;zoom,3;skewx,-0.2;);
@@ -128,15 +128,15 @@ t[#t+1] = Def.ActorFrame{
 local bonus = {PLAYER_1 = false, PLAYER_2 = false}
 if not GAMESTATE:IsEventMode() then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-		RIO.HeartSys("HeartsLeft",-RIO.SongHearts(),pn)
-		RIO.HeartSys("HeartsRemoved",RIO.SongHearts(),pn)
-		if PREFSMAN:GetPreference("AllowExtraStage") and PlayerAchievedBonusHeart(pn) and RIO.SongHearts() >= 2 then
-			RIO.HeartSys("HeartsLeft",1,pn)
-			RIO.HeartSys("BonusHearts",1,pn)
+		RIO.Hearts.HeartSys("HeartsLeft",-RIO.Hearts.SongHearts(),pn)
+		RIO.Hearts.HeartSys("HeartsRemoved",RIO.Hearts.SongHearts(),pn)
+		if PREFSMAN:GetPreference("AllowExtraStage") and PlayerAchievedBonusHeart(pn) and RIO.Hearts.SongHearts() >= 2 then
+			RIO.Hearts.HeartSys("HeartsLeft",1,pn)
+			RIO.Hearts.HeartSys("BonusHearts",1,pn)
 			--After giving the bonus heart PlayerAchievedBonusHeart will return false, so we have to keep the result in memory
 			bonus[pn] = true;
 		end;
-		if GAMESTATE:GetNumStagesLeft(pn) <= 0 and RIO.Hearts["HeartsLeft"][pn] > 0 then
+		if GAMESTATE:GetNumStagesLeft(pn) <= 0 and RIO.Hearts.Values["HeartsLeft"][pn] > 0 then
 			GAMESTATE:AddStageToPlayer(pn) --Hack to make sure SM5 doesn't think there are no stages left
 		end;
 	end;

@@ -8,7 +8,7 @@ local t = Def.ActorFrame{
 
 --NEXT STAGE
 local curstage = GAMESTATE:GetCurrentStage()
-if IsExtraStagePIU() then
+if RIO.Hearts.CheckHearts() then
 	curstage = "Stage_Extra1"
 elseif GAMESTATE:GetCurrentStageIndex() > 3 then
 	curstage = Stage[4];
@@ -43,7 +43,7 @@ if curstage == 'Stage_Event' then
 end;
 local UseNextStage = true;
 
-if GetSmallestNumHeartsLeftForAnyHumanPlayer() > 0 then
+if RIO.Hearts.MaxHeartsLeftForAnyPlayer() > 0 then
 	--pass, already true
 else
 	NextStageSleepTime = 0;
@@ -79,7 +79,7 @@ t[#t+1] = Def.Actor {
 			local profileDir = PROFILEMAN:GetProfileDir(ProfileSlot[PlayerNumber:Reverse()[player]+1]);
 			SaveProfileCustom(PROFILEMAN:GetProfile(player),profileDir);
 			--If there are no stages left, save extra data needed for memory cards.
-			if NumHeartsLeft[player] < 1 then
+			if RIO.Hearts.Values["HeartsLeft"][tonumber(string.match(player, "%d"))] < 1 then
 				if PROFILEMAN:ProfileWasLoadedFromMemoryCard(player) then
 					SaveMemcardProfileData(player);
 				end;
@@ -100,7 +100,7 @@ if RIO.DoDebug then
 	
 	t[#t+1] = LoadFont("Common Normal")..{
 		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;addy,100);
-		Text="P1 HEARTS: "..NumHeartsLeft[PLAYER_1].."\nP2 HEARTS: "..NumHeartsLeft[PLAYER_2].."\nMAX HEARTS: "..GetSmallestNumHeartsLeftForAnyHumanPlayer();
+		Text="P1 HEARTS: "..RIO.Hearts.Values["HeartsLeft"][1].."\nP2 HEARTS: "..RIO.Hearts.Values["HeartsLeft"][2].."\nMAX HEARTS: "..RIO.Hearts.MaxHeartsLeftForAnyPlayer();
 	};
 end;
 return t;

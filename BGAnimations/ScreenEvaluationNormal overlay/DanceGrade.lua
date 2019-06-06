@@ -1,4 +1,6 @@
 local player = ...;
+local pn = tonumber(string.match(player, "%d"))
+
 --fuck barely
 -- -- Season 2 asset designer A.Sora here
 -- -- If we decide to add W5 back, it'll be called Failin'
@@ -31,12 +33,8 @@ local maxcp1 =		css1:MaxCombo()											--Max Combo for this stage
 --css1:SetScore(getScores()[player]);
 
 local p1score =		css1:GetScore()			--score :v
---local p1accuracy =	tonumber(string.format("%.02f",(p1score/stagemaxscore)*100))	--Player 1 accuracy formatted number	--"%.3f" thanks CH32, se cambia el numero para mas decimales
+--local RIO.Acc[pn] =	tonumber(string.format("%.02f",(p1score/stagemaxscore)*100))	--Player 1 accuracy formatted number	--"%.3f" thanks CH32, se cambia el numero para mas decimales
 --local p2accuracy =	tonumber(string.format("%.02f",(p2score/stagemaxscore)*100))	--Player 2 accuracy formatted number
-
---TODO: Why are you declaring a variable and then assigning it on the next line wtf
-local p1accuracy = getenv(pname(player).."_accuracy") or 0;
-
 
 local p1ravins =	p1holdstr+p1w1
 local p1kcal = tonumber(string.format("%.1f",css1:GetCaloriesBurned()))
@@ -58,12 +56,12 @@ function gs(s)
 end
 
 local datalabelslist = {gs("W1"),gs("W2"),gs("W3"),gs("W4"),gs("Miss"),gs("MaxCombo"),"TOTAL SCORE","PRECISION","CALORIE (KCAL)"};
-local p1datalist =	{p1ravins,string.format("%03d",p1w2),string.format("%03d",p1w3),string.format("%03d",p1w4),string.format("%03d",p1misses),maxcp1,p1score,p1accuracy.."%",p1kcal};
+local p1datalist =	{p1ravins,string.format("%03d",p1w2),string.format("%03d",p1w3),string.format("%03d",p1w4),string.format("%03d",p1misses),maxcp1,p1score,RIO.Acc[pn].."%",p1kcal};
 
 local noFantastics = (PREFSMAN:GetPreference("AllowW1") == "AllowW1_Never") --Used in two places
 if noFantastics then
 	datalabelslist = {gs("W2"),gs("W3"),gs("W4"),gs("Miss"),gs("MaxCombo"),"PRECISION","TOTAL SCORE","CALORIE (KCAL)"};
-	p1datalist =	{p1ravins+p1w2,string.format("%03d",p1w3),string.format("%03d",p1w4),string.format("%03d",p1misses),maxcp1,p1accuracy.."%",p1score,p1kcal};
+	p1datalist =	{p1ravins+p1w2,string.format("%03d",p1w3),string.format("%03d",p1w4),string.format("%03d",p1misses),maxcp1,RIO.Acc[pn].."%",p1score,p1kcal};
 end;
 	
 t[#t+1] = Def.ActorFrame{
@@ -187,9 +185,9 @@ t[#t+1] = Def.ActorFrame{
 	Def.Actor{		--set in the env table accuracy values, so they can be get from save profile screen (next screen)
 		InitCommand=function(self)
 			--don't pass nil values to env
-			if p1accuracy == nil then p1accuracy = 0 end
+			if RIO.Acc[pn] == nil then RIO.Acc[pn] = 0 end
 			if p1grade == nil then p1grade = 0 end
-			setenv("LastStageAccuracy"..pname(player),p1accuracy);
+			setenv("LastStageAccuracy"..pname(player),RIO.Acc[pn]);
 			setenv("LastStageGrade"..pname(player),p1grade);
 		end;
 	};
@@ -215,25 +213,25 @@ if STATSMAN:GetCurStageStats():GetPlayerStageStats(player):IsDisqualified()==fal
 	-- old convention is commented
 	if getenv("StageFailed") == true then
 		gradep1="F"; -- _failed
-	elseif p1accuracy == 100 then
+	elseif RIO.Acc[pn] == 100 then
 		gradep1="S3"; -- S_S
-	elseif p1accuracy >= 97 and p1misses == 0 and p1w4 == 0 and p1w3 == 0 then
+	elseif RIO.Acc[pn] >= 97 and p1misses == 0 and p1w4 == 0 and p1w3 == 0 then
 		if PREFSMAN:GetPreference("AllowW1") == "AllowW1_Never" then 
 			gradep1="S3"; -- S_S
 		else 
 			gradep1="S2"; -- S_plus
 		end;
-	elseif p1accuracy >= 96 and p1misses == 0 and p1w4 == 0 then
+	elseif RIO.Acc[pn] >= 96 and p1misses == 0 and p1w4 == 0 then
 		gradep1="S1"; -- S_normal
-	elseif p1accuracy >= 80 then
+	elseif RIO.Acc[pn] >= 80 then
 		gradep1="A";
-	elseif p1accuracy >= 70 then
+	elseif RIO.Acc[pn] >= 70 then
 		gradep1="B";
-	elseif p1accuracy >= 60 then
+	elseif RIO.Acc[pn] >= 60 then
 		gradep1="C";
-	elseif p1accuracy >= 50 then
+	elseif RIO.Acc[pn] >= 50 then
 		gradep1="D";
-	elseif p1accuracy < 50 then
+	elseif RIO.Acc[pn] < 50 then
 		gradep1="E"; -- F
 	else
 		gradep1="F"; -- _failed
@@ -262,13 +260,13 @@ if STATSMAN:GetCurStageStats():GetPlayerStageStats(player):IsDisqualified()==fal
 			InitCommand=cmd(x,p1initx+15;y,p1inity+100;zoom,.5);
 			--Must be OnCommand because hearts have to be subtracted first in default.lua
 			LoadFont("Common Normal")..{
-				OnCommand=cmd(settext,pname(player).." hearts left: "..NumHeartsLeft[player];);
+				OnCommand=cmd(settext,pname(player).." hearts left: "..RIO.Hearts.Values["HeartsLeft"][pn]);
 			};
 			LoadFont("Common Normal")..{
-				OnCommand=cmd(settext,pname(player).." hearts removed: "..NumHeartsRemoved[player].. "(excluding bonus hearts)";addy,20);
+				OnCommand=cmd(settext,pname(player).." hearts removed: "..RIO.Hearts.Values["HeartsRemoved"][pn].. "(excluding bonus hearts)";addy,20);
 			};
 			LoadFont("Common Normal")..{
-				OnCommand=cmd(settext,pname(player).." bonus hearts: "..BonusHeartsAdded[player];addy,40);
+				OnCommand=cmd(settext,pname(player).." bonus hearts: "..RIO.Hearts.Values["BonusHearts"][pn];addy,40);
 			};
 			LoadFont("Common Normal")..{
 				OnCommand=cmd(settext,pname(player).." got bonus heart? "..boolToString(PlayerAchievedBonusHeart(player));addy,60);

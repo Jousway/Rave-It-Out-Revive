@@ -590,7 +590,7 @@ t[#t+1] = LoadActor("code_detector.lua")..{};
 --t[#t+1] = LoadActor("PlayerMods")..{};
 t[#t+1] = LoadActor("GenreSounds.lua")..{};
 if getenv("PlayMode") == "Arcade" or getenv("PlayMode") == "Pro" then 
-	if GetSmallestNumHeartsLeftForAnyHumanPlayer() > 1 then
+	if RIO.Hearts.MaxHeartsLeftForAnyPlayer() > 1 then
 		t[#t+1] = LoadActor("channel_system")..{};
 	else
 		assert(SONGMAN:DoesSongGroupExist(RIO_FOLDER_NAMES["SnapTracksFolder"]),"You are missing the snap tracks folder from SYSTEM_PARAMETERS.lua which is required. The game cannot continue.");

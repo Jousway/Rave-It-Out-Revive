@@ -30,8 +30,16 @@ return Def.ActorFrame{
 		Font="common normal",
 		InitCommand=function(self) self:xy(5,25):horizalign(0):vertalign(0):zoom(.5):strokecolor(0,0,0,1) end,
 		OnCommand=function(self)
+			local GetVid = { [true] = "AUTO", [2048] = "HD", [1024] = "SD" }
+			self:settext("TEXTURE MODE: "..GetVid[ToBoolean(RIO.Config("AutoVid","false")) or PREFSMAN:GetPreference("MaxTextureResolution")])
+		end
+	},
+	Def.BitmapText{
+		Font="common normal",
+		InitCommand=function(self) self:xy(5,35):horizalign(0):vertalign(0):zoom(.5):strokecolor(0,0,0,1) end,
+		OnCommand=function(self)
 			local ExtraHearts = { [true] = "+" } --Who knows, for future values?
-			self:settext("HEARTS PER PLAY: "..HeartsPerPlay..(ExtraHearts[PREFSMAN:GetPreference("AllowExtraStage")] or ""))
+			self:settext("HEARTS PER PLAY: "..RIO.Config("HeartsPerPlay",6)..(ExtraHearts[PREFSMAN:GetPreference("AllowExtraStage")] or ""))
 		end
 	},
 	--Unlock status data

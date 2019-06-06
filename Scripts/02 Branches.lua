@@ -186,7 +186,7 @@ Branch = {
 		if GAMESTATE:IsCourseMode() then
 			return "ScreenProfileSave"
 		else
-			if UnlockedOMES_RIO() then
+			if RIO.Hearts.UnlockedOMES() then
 				--Set stage break to 1. Gotta get that full combo!
 				setenv("BreakCombo",1);
 				setenv("IsOMES_RIO",true)
@@ -227,8 +227,8 @@ Branch = {
 					return "ScreenProfileSaveSummary"
 				end;
 			else
-				local maxHearts = HeartsPerPlay
-				local heartsLeft = GetSmallestNumHeartsLeftForAnyHumanPlayer();
+				local maxHearts = RIO.Config("HeartsPerPlay",6)
+				local heartsLeft = RIO.Hearts.MaxHeartsLeftForAnyPlayer();
 				local allFailed = STATSMAN:GetCurStageStats():AllFailed()
 				local song = GAMESTATE:GetCurrentSong()
 				--SCREENMAN:SystemMessage(heartsLeft);
@@ -256,7 +256,7 @@ Branch = {
 			return SelectMusicOrCourse()
 		elseif STATSMAN:GetCurStageStats():AllFailed() then
 			return GameOverOrContinue()
-		elseif GetSmallestNumHeartsLeftForAnyHumanPlayer() == 0 then
+		elseif RIO.Hearts.MaxHeartsLeftForAnyPlayer() == 0 then
 			if not GAMESTATE:IsCourseMode() then
 				return "ScreenEvaluationSummary"
 			else

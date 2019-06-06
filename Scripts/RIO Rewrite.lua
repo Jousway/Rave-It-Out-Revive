@@ -32,6 +32,7 @@ RIO.Version = RIO.Config("Version","Storm 2019")
 
 RIO.LockSongs = ToBoolean(RIO.Config("LockSongs","true"))
 RIO.NumSongsToLevelUp = RIO.Config("NumSongsToLevelUp",4)
+RIO.SpecialSongs = ToBoolean(RIO.Config("SpecialModeEnabled","true"))
 RIO.MaxLevel = RIO.Config("MaxLevel",100)
 
 RIO.GamePlayMenu = ToBoolean(RIO.Config("GamePlayMenu","false"))
@@ -43,6 +44,39 @@ RIO.ScreenInRatio =  RIO.Config("FadeInRatio",0.25)
 RIO.AnimationInLength = RIO.Config("FadeInTween",0.25)
 RIO.ScreenOutRatio =  RIO.Config("FadeOutRatio",0.25)
 RIO.AnimationOutLength = RIO.Config("FadeOutTween",0.25)
+
+RIO.Hearts = {
+	["HeartsLeft"] = { tonumber(RIO.Config("HeartsPerPlay",6)), tonumber(RIO.Config("HeartsPerPlay",6)) },
+	["BonusHearts"] = {0,0},
+	["HeartsRemoved"] = {0,0}
+}
+
+RIO.HeartSys = function(Type,Amount,pn)
+	RIO.Hearts[Type][pn] = RIO.Hearts[Type][pn] + Amount
+	return RIO.Hearts[Type][pn] >= tonumber(RIO.Config("HeartsPerPlay",6))
+end
+
+RIO.CheckHearts = function() return RIO.HeartSys("HeartsRemoved",0,1) or RIO.HeartSys("HeartsRemoved",0,1) end
+
+RIO.SongHearts = function() if GAMESTATE:GetCurrentSong() then return GetSongExtraData(GAMESTATE:GetCurrentSong(), "Hearts") else return 0 end end
+
+RIO.MaxHeartsLeftForAnyPlayer = function() 
+	local IHP = function(p) return GAMESTATE:IsHumanPlayer(p) end
+	if IHP(PLAYER_1) and IHP(PLAYER_2) then return math.max(RIO.Hearts["HeartsLeft"][1],RIO.Hearts["HeartsLeft"][2]) end
+	return RIO.Hearts["HeartsLeft"][tonumber(string.match(GAMESTATE:GetMasterPlayerNumber(),"%d"))]
+end
+
+RIO.Acc = {0,0}
+
+RIO.BonusHearts = function(pn)
+	if RIO.Hearts["BonusHearts"][pn] < 2 or GAMESTATE:IsSideJoined("PlayerNumber_P"..pn) then
+		return RIO.Acc[pn] > 90 or ToBoolean(RIO.Config("AlwaysGetBonusHearts","false"))
+	end
+end
+
+RIO.UnlockedOMES = function()
+	return false -- need to properly rewrite this, disable for now
+end
 
 RIO.IsMemcardEnabled = PREFSMAN:GetPreference("MemoryCards") and PREFSMAN:GetPreference("MemoryCardProfiles")
 
@@ -118,10 +152,64 @@ RIO.NoteSkins = function()
 	return t
 end
 
+RIO.VideoMode = function()
+	local t = {
+		Name = "Graphics Details",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = true,
+		ExportOnChange = false,
+		Choices = {"AUTO", "SD", "HD"},
+		LoadSelections = function(self, list, pn)
+			local CurSel = { [true] = 1, [2048] = 3, [1024] = 2 }
+			list[CurSel[ToBoolean(RIO.Config("AutoVid","false")) or PREFSMAN:GetPreference("MaxTextureResolution")]] = true
+		end,
+		SaveSelections = function(self, list, pn)
+			local DisplayType = { [1.78] = 2048, [1.33] = 1024 }
+			local SavSel = { [3] = 2048, [2] = 1024 }
+			for i,v in ipairs(list) do
+				if v then 
+					PREFSMAN:SetPreference("MaxTextureResolution",SavSel[i] or DisplayType[round(GetScreenAspectRatio(),2)] or 1024)
+					Config.Save("AutoVid",tostring(list[1]),THEME:GetCurrentThemeDirectory().."/Config.ini")
+				end
+			end
+			PREFSMAN:SetPreference("DisplayColorDepth",32)
+			PREFSMAN:SetPreference("MovieColorDepth",32)
+			PREFSMAN:SetPreference("TextureColorDepth",32)
+			PREFSMAN:SavePreferences()
+		end
+	}
+	setmetatable( t, t )
+	return t
+end
+
+RIO.HeartsPerPlayConfig = function()
+	local t = {
+		Name = "HeartsPerPlay",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = true,
+		ExportOnChange = false,
+		Choices = {"2", "3", "4", "5", "6 (default)", "7", "8"},
+		LoadSelections = function(self, list, pn)
+			list[tonumber(RIO.Config("HeartsPerPlay",6))-1] = true
+		end,
+		SaveSelections = function(self, list, pn)
+			for i,v in ipairs(list) do if v then Config.Save("HeartsPerPlay",i+1,THEME:GetCurrentThemeDirectory().."/Config.ini") end end
+		end,
+	};
+	setmetatable( t, t );
+	return t;
+end;
+
 RIO.Reset = function()
-	--Init PIU_HEARTS_SYSTEM
-	Reset_PIU_Hearts()
-		
+
+	RIO.Hearts = {
+		["HeartsLeft"] = { tonumber(RIO.Config("HeartsPerPlay",6)), tonumber(RIO.Config("HeartsPerPlay",6)) },
+		["BonusHearts"] = {0,0},
+		["HeartsRemoved"] = {0,0}
+	}
+
 	--Reset PlayerOptions
 	ActiveModifiers = {
 		P1 = table.shallowcopy(PlayerDefaults),

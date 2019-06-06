@@ -276,8 +276,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 						self:settext(accuracy.."%");
 					end;
 				end;
-				-- sets the accuracy (ugly workaround) -ROAD24
-				setenv(pname(pn).."_accuracy",accuracy);
+				RIO.Acc[pn] = accuracy
 			end;
 				
 		};

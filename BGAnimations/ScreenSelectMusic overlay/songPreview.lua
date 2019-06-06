@@ -4,7 +4,7 @@ local streamSafeMode = (ReadPrefFromFile("StreamSafeEnabled") == "true");
 
 --GAMESTATE:SetCurrentSong(SONGMAN:FindSong("3y3s"))
 extraStageSong = nil;
-local isExtraStage = IsExtraStagePIU()
+local isExtraStage = RIO.CheckHearts()
 if isExtraStage then
 	local sDir = GAMESTATE:GetCurrentSong():GetSongDir()
 	local arr = split("/",sDir)
@@ -234,7 +234,7 @@ return Def.ActorFrame{
 		LoadFont("monsterrat/_montserrat semi bold 60px")..{
 			InitCommand=cmd(horizalign,left;x,_screen.cx-95;y,_screen.cy+74;zoom,0.3;);
 			CurrentSongChangedMessageCommand=function(self)
-				self:settext("X"..GetNumHeartsForSong());
+				self:settext("X"..RIO.SongHearts());
 				(cmd(finishtweening;zoomy,0;zoomx,0.5;decelerate,0.33;zoom,0.2;skewx,-0.2)) (self)
 			end;
 		};

@@ -62,21 +62,21 @@ end
 local t = Def.ActorFrame{};
 
 local heartXPos = 260;
-local heartsLength = HeartsPerPlay*16;
+local heartsLength = RIO.Config("HeartsPerPlay",6)*16;
 
 --[[t[#t+1] = Def.Quad{
 	InitCommand=cmd(setsize,heartsLength,15;xy,heartXPos,SCREEN_BOTTOM-15);
 };]]
 --P1 HEARTS
 if IsUsingWideScreen() then
-	for i=1,HeartsPerPlay do
+	for i=1,RIO.Config("HeartsPerPlay",6) do
 		t[#t+1] = LoadActor("heart_background") .. {
 			InitCommand=cmd(zoom,0.5;x,heartXPos+i*16-heartsLength/2;y,SCREEN_BOTTOM-10;horizalign,right;visible,GAMESTATE:IsSideJoined(PLAYER_1));
 			OnCommand=cmd(visible,GAMESTATE:IsSideJoined(PLAYER_1));
 		};
 	end;
 
-	for i=1,NumHeartsLeft[PLAYER_1] do
+	for i=1,RIO.Hearts["HeartsLeft"][1] do
 		t[#t+1] = LoadActor("heart_foreground") .. {
 			--The order of diffuseshift matters! Make sure you put it BEFORE effectcolor1 and effectcolor2!
 			InitCommand=cmd(zoom,0.5;x,heartXPos+i*16-heartsLength/2;y,SCREEN_BOTTOM-10;horizalign,right;diffuseshift;effectcolor1,color("#FFFFFF");effectcolor2,color("#FFFFFF");visible,GAMESTATE:IsSideJoined(PLAYER_1));
@@ -87,7 +87,7 @@ if IsUsingWideScreen() then
 				end
 			end;]]
 			CurrentSongChangedMessageCommand=function(self)
-				if i > NumHeartsLeft[PLAYER_1]-GetNumHeartsForSong() then
+				if i > RIO.Hearts["HeartsLeft"][1]-RIO.SongHearts() then
 					self:effectcolor1(color("#7e7e7e"))
 				else
 					self:effectcolor1(color("#FFFFFF"))
@@ -103,7 +103,7 @@ else
 			InitCommand=cmd(zoom,.5;);
 		};
 		LoadFont("common normal")..{
-			Text="x"..NumHeartsLeft[PLAYER_1];
+			Text="x"..RIO.Hearts["HeartsLeft"][1],
 			InitCommand=cmd(zoom,.5;horizalign,left;addx,7);
 		};
 	};
@@ -247,18 +247,18 @@ t[#t+1] = Def.ActorFrame{
 
 --P2 HEARTS
 if IsUsingWideScreen() then
-	for i=1,HeartsPerPlay do
+	for i=1,RIO.Config("HeartsPerPlay",6) do
 		t[#t+1] = LoadActor("heart_background") .. {
 			InitCommand=cmd(zoom,0.5;x,(SCREEN_RIGHT-heartXPos)+i*16-heartsLength/2;y,SCREEN_BOTTOM-10;horizalign,right;visible,GAMESTATE:IsSideJoined(PLAYER_2));
 			OnCommand=cmd(visible,GAMESTATE:IsSideJoined(PLAYER_2));
 		};
 	end;
 
-	for i=1,NumHeartsLeft[PLAYER_2] do
+	for i=1,RIO.Hearts["HeartsLeft"][2] do
 		t[#t+1] = LoadActor("heart_foreground") .. {
 			InitCommand=cmd(zoom,0.5;x,(SCREEN_RIGHT-heartXPos)+i*16-heartsLength/2;y,SCREEN_BOTTOM-10;horizalign,right;diffuseshift;effectcolor1,color("#FFFFFF");effectcolor2,color("#FFFFFF");visible,GAMESTATE:IsSideJoined(PLAYER_2));
 			CurrentSongChangedMessageCommand=function(self)
-				if i > NumHeartsLeft[PLAYER_2]-GetNumHeartsForSong() then
+				if i > RIO.Hearts["HeartsLeft"][2]-RIO.SongHearts() then
 					self:effectcolor1(color("#7e7e7e"))
 				else
 					self:effectcolor1(color("#FFFFFF"))
@@ -274,7 +274,7 @@ else
 			InitCommand=cmd(zoom,.5;);
 		};
 		LoadFont("common normal")..{
-			Text="x"..NumHeartsLeft[PLAYER_2];
+			Text="x"..RIO.Hearts["HeartsLeft"][2];
 			InitCommand=cmd(zoom,.5;horizalign,left;addx,7);
 		};
 	};
